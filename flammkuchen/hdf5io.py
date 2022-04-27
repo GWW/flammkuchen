@@ -32,12 +32,12 @@ ATTR_TYPES = (int, float, bool, str, bytes,
 
 if _pandas:
     class _HDFStoreWithHandle(pd.io.pytables.HDFStore):
-        def __init__(self, handle):
+        def __init__(self, handle, filters):
             self._path = None
             self._complevel = None
             self._complib = None
             self._fletcher32 = False
-            self._filters = None
+            self._filters = filters
 
             self._handle = handle
 
@@ -249,7 +249,7 @@ def _save_level(handler, group, level, name=None, filters=None, idtable=None):
         _save_ndarray(handler, group, name, level, filters=filters)
 
     elif _pandas and isinstance(level, (pd.DataFrame, pd.Series)):
-        store = _HDFStoreWithHandle(handler)
+        store = _HDFStoreWithHandle(handler, filters=filters)
         store.put(group._v_pathname + '/' + name, level)
 
     elif isinstance(level, (sparse.dok_matrix,
