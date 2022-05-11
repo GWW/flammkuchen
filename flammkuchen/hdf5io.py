@@ -32,7 +32,7 @@ ATTR_TYPES = (int, float, bool, str, bytes,
 
 if _pandas:
     class _HDFStoreWithHandle(pd.io.pytables.HDFStore):
-        def __init__(self, handle, filters):
+        def __init__(self, handle, filters=None):
             self._path = None
             self._complevel = None
             self._complib = None
